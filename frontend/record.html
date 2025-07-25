@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medical Records | QuickClinic</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body class="dashboard-layout">
+  <button class="sidebar-toggle">☰</button>
+  <!-- Sidebar -->
+  <aside class="sidebar-fixed">
+    <h2>QuickClinic</h2>
+    <ul>
+      <li><a href="dashboard.html">🏠 Dashboard</a></li>
+      <li><a href="book.html">📅 Book</a></li>
+      <li><a href="chat.html">💬 Chat</a></li>
+      <li><a href="record.html">📁 Records</a></li>
+      <li id="adminLink" style="display: none;"><a href="admin.html">📊 Admin</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Background Strip -->
+  <div class="background-strip"></div>
+
+  <!-- Main Content -->
+  <main class="dashboard-content">
+    <button id="darkToggle" class="dark-mode-toggle">🌙</button>
+
+    <div class="floating-box">
+      <h2>Your Medical Records</h2>
+
+      <!-- Upload Form -->
+      <form id="uploadForm" enctype="multipart/form-data">
+        <label for="recordFile">Upload Record (PDF/Image)</label>
+        <input type="file" id="recordFile" name="record" accept=".pdf,.jpg,.jpeg,.png" required />
+        
+        <label for="desc">Description</label>
+        <input type="text" id="desc" name="description" placeholder="e.g. Blood test results" />
+
+        <button type="submit" class="btn">Upload</button>
+      </form>
+
+      <h3 style="margin-top:20px;">📄 Uploaded Records</h3>
+      <ul id="recordList"></ul>
+    </div>
+  </main>
+
+  <script>
+    const token = localStorage.getItem("token");
+    const myUserData = localStorage.getItem("user");
+
+    if (!myUserData || !token) {
+      alert("Please log in first.");
+      window.location.href = "login.html";
+    }
+
+    const myUser = JSON.parse(myUserData);
+
+    if (myUser.role === "doctor") {
+      window.location.href = "record-doctor.html";
+    }
+
+    if (myUser.role === "admin") {
+      document.getElementById("adminLink").style.display = "block";
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    // Upload Record
+    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch("https://quickclinic-backend.onrender.com/api/records", {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token
+          },
+          body: formData
+        });
+
+        if (res.ok) {
+          alert("✅ Record uploaded successfully.");
+          form.reset();
+          loadRecords();
+        } else {
+          const data = await res.json();
+          alert(data.error || "❌ Failed to upload record.");
+        }
+      } catch (err) {
+        console.error("Upload error:", err);
+        alert("Server error.");
+      }
+    });
+
+    // Load records
+    async function loadRecords() {
+      try {
+        const res = await fetch("https://quickclinic-backend.onrender.com/api/records/mine", {
+          headers: { Authorization: "Bearer " + token }
+        });
+        const records = await res.json();
+
+        const list = document.getElementById("recordList");
+        list.innerHTML = "";
+
+        if (!records.length) {
+          list.innerHTML = "<li>No records uploaded.</li>";
+          return;
+        }
+
+        records.forEach((r) => {
+          const item = document.createElement("li");
+          item.innerHTML = `
+            📝 ${r.description || "No description"} - 
+            <a href="https://quickclinic-backend.onrender.com/${r.file}" target="_blank">View</a> 
+            <small>(${new Date(r.date).toLocaleString()})</small>
+            <button onclick="deleteRecord('${r._id}')" style="margin-left:10px; color:red;">🗑 Delete</button>
+          `;
+          list.appendChild(item);
+        });
+      } catch (err) {
+        console.error("Fetch error:", err);
+        alert("Failed to load records.");
+      }
+    }
+
+    // Delete Record
+    async function deleteRecord(id) {
+      if (!confirm("Are you sure you want to delete this record?")) return;
+
+      try {
+        const res = await fetch(`https://quickclinic-backend.onrender.com/api/records/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("✅ Record deleted.");
+          loadRecords();
+        } else {
+          alert(data.error || "❌ Failed to delete record.");
+        }
+      } catch (err) {
+        console.error("Delete error:", err);
+        alert("Server error while deleting.");
+      }
+    }
+
+    loadRecords();
+  </script>
+
+  <script src="assets/darkmode.js"></script>
+  <script src="assets/sidebar.js"></script>
+</body>
+</html>

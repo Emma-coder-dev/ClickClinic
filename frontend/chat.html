@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat | QuickClinic</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body class="dashboard-layout">
+  <button class="sidebar-toggle">☰</button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar-fixed">
+    <h2>QuickClinic</h2>
+    <ul>
+      <li><a href="dashboard.html">🏠 Dashboard</a></li>
+      <li><a href="book.html">📅 Book</a></li>
+      <li><a href="chat.html">💬 Chat</a></li>
+      <li><a href="record.html">📁 Records</a></li>
+      <li id="adminLink" style="display: none;"><a href="admin.html">📊 Admin</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Background strip -->
+  <div class="background-strip"></div>
+
+  <!-- Main chat content -->
+  <main class="dashboard-content">
+    <button id="darkToggle" class="dark-mode-toggle">🌙</button>
+
+    <div class="floating-box" style="max-height: 90vh; display: flex; flex-direction: column;">
+      <h2 id="chatTitle">Chat with Your Doctor</h2>
+
+      <!-- Doctor Dropdown -->
+      <label for="doctorSelect">Choose a doctor:</label>
+      <select id="doctorSelect">
+        <option value="">-- Select Doctor --</option>
+      </select>
+
+      <!-- Chat Window -->
+      <div id="chatWindow" class="chat-window"></div>
+
+      <!-- Chat Input -->
+      <form id="chatForm" class="chat-form">
+        <input type="text" id="messageInput" placeholder="Type your message..." required />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="assets/darkmode.js"></script>
+  <script src="assets/sidebar.js"></script>
+  <script src="assets/chat.js"></script>
+</body>
+</html>

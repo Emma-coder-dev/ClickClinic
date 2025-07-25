@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuickClinic | Home</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#317EFB">
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="icon" href="assets/icons/favicon.png" />
+</head>
+<body class="home-body">
+
+  <!-- Dark Mode Toggle -->
+  <button id="darkToggle" class="dark-mode-toggle" title="Toggle Dark Mode">🌙</button>
+
+  <!-- Hero Section -->
+  <section class="hero-section fade-in">
+    <h1>QuickClinic is here with you</h1>
+    <p class="hero-desc">
+      A digital health platform that connects you with certified doctors, lets you upload and manage your medical records, book appointments, and chat with professionals,anytime, anywhere. Built with Progressive Web App support for seamless access.
+    </p>
+    <div class="home-buttons">
+      <a href="login.html" class="btn">Login</a>
+      <a href="register.html" class="btn btn-alt">Register</a>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="features-grid">
+    <div class="feature-box" style="--i:0"><span class="feature-icon">💬</span><span class="feature-title">Chat with professional doctors</span></div>
+    <div class="feature-box" style="--i:1"><span class="feature-icon">📅</span><span class="feature-title">Book & manage appointments</span></div>
+    <div class="feature-box" style="--i:2"><span class="feature-icon">🗂️</span><span class="feature-title">Upload & store medical records</span></div>
+    <div class="feature-box" style="--i:3"><span class="feature-icon">📊</span><span class="feature-title">Access personal dashboard</span></div>
+    <div class="feature-box" style="--i:4"><span class="feature-icon">⚡</span><span class="feature-title">Built as a Progressive Web App</span></div>
+    <div class="feature-box" style="--i:5"><span class="feature-icon">🌍</span><span class="feature-title">Use it anytime, anywhere</span></div>
+  </section>
+
+  <script src="assets/darkmode.js"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(function(registration) {
+          console.log('ServiceWorker registration successful:', registration.scope);
+        }, function(err) {
+          console.log('ServiceWorker registration failed:', err);
+        });
+    });
+  } 
+  
+  // Animate hero fade-in
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.hero-section').classList.add('visible');
+    // Animate features with stagger
+    document.querySelectorAll('.feature-box').forEach((box, i) => {
+      setTimeout(() => box.classList.add('visible'), 400 + i * 180);
+    });
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctor Dashboard | QuickClinic</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="icon" href="assets/icons/favicon.png" />
+</head>
+<body class="dashboard-layout">
+  <button class="sidebar-toggle">☰</button>
+  <!-- Sidebar -->
+  <aside class="sidebar-fixed">
+    <h2>QuickClinic</h2>
+    <ul>
+      <li><a href="doctor-dashboard.html">🏥 Doctor Dashboard</a></li>
+      <li><a href="chat-doctor.html">💬 Chat</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <div class="background-strip"></div>
+
+  <!-- Main -->
+  <main class="dashboard-content">
+    <button id="darkToggle" class="dark-mode-toggle">🌙</button>
+
+    <div class="floating-box">
+      <h2>Welcome, Dr. <span id="doctorName">...</span></h2>
+
+      <h3>Your Appointments</h3>
+      <table id="doctor-bookings" border="1">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Patient</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody id="booking-body">
+          <tr><td colspan="5">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    const token = localStorage.getItem("token");
+    let user;
+
+    try {
+      user = JSON.parse(localStorage.getItem("user"));
+    } catch (err) {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    if (!token || !user || user.role !== "doctor") {
+      alert("Access denied. Only doctors can view this page.");
+      window.location.href = "login.html";
+    }
+
+    document.getElementById("doctorName").textContent = user.name;
+
+    fetch("https://quickclinic-backend.onrender.com/api/bookings/doctor", {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+    .then(res => res.json())
+    .then(bookings => {
+      const tbody = document.getElementById("booking-body");
+      tbody.innerHTML = "";
+
+      if (!bookings.length) {
+        tbody.innerHTML = `<tr><td colspan="5">No appointments yet.</td></tr>`;
+        return;
+      }
+
+      bookings.forEach((booking, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${booking.patient?.name || "Unknown"}</td>
+          <td>${booking.patient?.email || "N/A"}</td>
+          <td>${new Date(booking.date).toLocaleString()}</td>
+          <td>${booking.reason}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    })
+    .catch(err => {
+      console.error("Error fetching bookings:", err);
+      document.getElementById("booking-body").innerHTML =
+        `<tr><td colspan="5">Failed to load bookings</td></tr>`;
+    });
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <script src="assets/darkmode.js"></script>
+  <script src="assets/sidebar.js"></script>
+</body>
+</html>

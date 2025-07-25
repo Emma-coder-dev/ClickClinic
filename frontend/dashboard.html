@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | QuickClinic</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="icon" href="assets/icons/favicon.png" />
+</head>
+<body class="dashboard-layout">
+<button class="sidebar-toggle">☰</button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar-fixed">
+    <h2>QuickClinic</h2>
+    <ul>
+      <li><a href="dashboard.html">🏠 Dashboard</a></li>
+      <li><a href="book.html">📅 Book</a></li>
+      <li><a href="chat.html">💬 Chat</a></li>
+      <li><a href="record.html">📁 Records</a></li>
+      <li id="adminLink" style="display: none;"><a href="admin.html">📊 Admin</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Background Strip -->
+  <div class="background-strip"></div>
+
+  <!-- Dashboard Content -->
+  <main class="dashboard-content">
+    <button id="darkToggle" class="dark-mode-toggle">🌙</button>
+    
+    <div class="floating-box">
+      <h2>Welcome, <span id="userName">User</span>!</h2>
+
+      <div class="info-grid">
+        <div class="info-label">Email:</div>
+        <div class="info-value" id="userEmail">email@example.com</div>
+
+        <div class="info-label">Role:</div>
+        <div class="info-value" id="userRole">role</div>
+      </div>
+
+      <h2>Your Appointments</h2>
+      <table id="booking-table" border="1">
+        <thead id="table-head">
+          <!-- Dynamically inserted -->
+        </thead>
+        <tbody id="booking-body">
+          <tr><td colspan="4">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    const token = localStorage.getItem("token");
+    const myUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!token || !myUser) {
+      alert("You must log in first.");
+      window.location.href = "login.html";
+    }
+
+    // Display user info
+    document.getElementById("userName").textContent = myUser.name;
+    document.getElementById("userEmail").textContent = myUser.email;
+    document.getElementById("userRole").textContent = myUser.role;
+
+    // Show admin link if applicable
+    if (myUser.role === "admin") {
+      document.getElementById("adminLink").style.display = "block";
+    }
+
+    // Determine URL based on role
+    const bookingUrl = myUser.role === "doctor"
+      ? "https://quickclinic-backend.onrender.com/api/bookings/doctor"
+      : "https://quickclinic-backend.onrender.com/api/bookings/mine";
+
+    // Update table headers
+    const tableHead = document.getElementById("table-head");
+    tableHead.innerHTML = myUser.role === "doctor"
+      ? `
+        <tr>
+          <th>#</th>
+          <th>Patient Name</th>
+          <th>Email</th>
+          <th>Date</th>
+          <th>Reason</th>
+        </tr>`
+      : `
+        <tr>
+          <th>#</th>
+          <th>Doctor Name</th>
+          <th>Date</th>
+          <th>Reason</th>
+        </tr>`;
+
+    // Fetch bookings
+    fetch(bookingUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(res => res.json())
+    .then(bookings => {
+      const tbody = document.getElementById("booking-body");
+      tbody.innerHTML = "";
+
+      if (!bookings.length) {
+        tbody.innerHTML = `<tr><td colspan="5">No bookings found.</td></tr>`;
+        return;
+      }
+
+      bookings.forEach((booking, index) => {
+        const row = document.createElement("tr");
+
+        if (myUser.role === "doctor") {
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${booking.patient?.name || "N/A"}</td>
+            <td>${booking.patient?.email || "N/A"}</td>
+            <td>${new Date(booking.date).toLocaleString()}</td>
+            <td>${booking.reason}</td>
+          `;
+        } else {
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${booking.doctor?.name || "N/A"}</td>
+            <td>${new Date(booking.date).toLocaleString()}</td>
+            <td>${booking.reason}</td>
+          `;
+        }
+
+        tbody.appendChild(row);
+      });
+    })
+    .catch(error => {
+      console.error("Error fetching bookings:", error);
+      document.getElementById("booking-body").innerHTML =
+        `<tr><td colspan="5">Failed to load bookings</td></tr>`;
+    });
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+  </script>   
+  <script src="assets/darkmode.js"></script>
+  <script src="assets/sidebar.js"></script>
+</body>
+</html>

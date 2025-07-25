@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register | QuickClinic</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="icon" href="assets/icons/favicon.png" />
+</head>
+<body class="home-body">
+
+  <!-- 🌙 Dark Mode Toggle -->
+  <button id="darkToggle" class="dark-mode-toggle">🌙</button>
+
+  <!-- 📝 Registration Form -->
+  <div class="home-container">
+    <h2>Register to <span class="highlight">QuickClinic</span></h2>
+    <form id="registerForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="Jane Doe" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="you@example.com" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter password" required />
+
+      <label for="confirm">Confirm Password</label>
+      <input type="password" id="confirm" placeholder="Repeat password" required />
+
+      <label for="role">Select Role</label>
+      <select id="role" required>
+        <option value="">Choose...</option>
+        <option value="patient">Patient</option>
+        <option value="doctor">Doctor</option>
+      </select>
+
+      <button type="submit" class="btn">Register</button>
+    </form>
+
+    <p style="margin-top: 10px;">
+      Already have an account? <a href="login.html">Login</a>
+    </p>
+  </div>
+
+  <script src="assets/darkmode.js"></script>
+  <script src="assets/register.js"></script>
+</body>
+</html>

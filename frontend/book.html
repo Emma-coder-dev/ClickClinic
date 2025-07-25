@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Appointment | QuickClinic</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body class="dashboard-layout">
+  <button class="sidebar-toggle">☰</button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar-fixed">
+    <h2>QuickClinic</h2>
+    <ul>
+      <li><a href="dashboard.html">🏠 Dashboard</a></li>
+      <li><a href="book.html">📅 Book</a></li>
+      <li><a href="chat.html">💬 Chat</a></li>
+      <li><a href="record.html">📁 Records</a></li>
+      <li id="adminLink" style="display: none;"><a href="admin.html">📊 Admin</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Background -->
+  <div class="background-strip"></div>
+
+  <!-- Booking Form -->
+  <main class="dashboard-content">
+    <button id="darkToggle" class="dark-mode-toggle">🌙</button>
+    <div class="floating-box">
+      <h2>Book an Appointment</h2>
+
+      <form id="bookingForm">
+        <label for="doctor">Choose Doctor:</label>
+        <select id="doctorSelect" required>
+          <option value="">-- Select Doctor --</option>
+        </select>
+
+        <label for="date">Date & Time:</label>
+        <input type="datetime-local" id="date" required />
+
+        <label for="reason">Reason for Visit:</label>
+        <input type="text" id="reason" placeholder="e.g. General checkup" required />
+
+        <button type="submit" class="btn">Book Appointment</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+  const myUserData = localStorage.getItem("user");
+  const token = localStorage.getItem("token");
+
+  if (!myUserData || !token) {
+    alert("Please log in first.");
+    window.location.href = "login.html";
+  }
+
+  const myUser = JSON.parse(myUserData);
+  
+  // 🚫 Prevent doctors from accessing this page
+  if (myUser.role === "doctor") {
+    alert("Doctors are not allowed to book appointments.");
+    window.location.href = "dashboard.html"; // or doctor-dashboard.html
+  }
+
+</script>
+
+
+  <script src="assets/darkmode.js"></script>
+  <script src="assets/sidebar.js"></script>
+  <script src="assets/book.js"></script>
+</body>
+</html>

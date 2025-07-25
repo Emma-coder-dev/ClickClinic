@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | QuickClinic</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="icon" href="assets/icons/favicon.png" />
+</head>
+<body class="home-body">
+
+  <!-- 🌙 Dark Mode Toggle -->
+  <button id="darkToggle" class="dark-mode-toggle">🌙</button>
+
+  <!-- 🔐 Login Form Container -->
+  <div class="home-container">
+    <h2>Login to <span class="highlight">QuickClinic</span></h2>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="you@example.com" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter password" required />
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+
+
+
+    <p style="margin-top: 10px;">
+      <a href="login-code.html">Login with code instead</a> |
+      <a href="register.html">Register</a>
+    </p>
+  </div>
+
+  <script>
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    try {
+      const res = await fetch("https://quickclinic-backend.onrender.com/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+      console.log("Token:", data.token);
+console.log("User:", data.user);
+
+
+      if (res.ok) {
+        // ✅ Save token and user info
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("role", data.user.role);
+
+        alert("Login successful");
+        window.location.href = "dashboard.html";
+      } else {
+        alert(data.message || "Login failed");
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong: " + err.message);
+    }
+  });
+</script>
+
+
+  <script src="assets/darkmode.js"></script>
+  <script src="assets/auth.js"></script>
+</body>
+</html>

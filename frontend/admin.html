@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | QuickClinic</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body class="dashboard-layout">
+<button class="sidebar-toggle">☰</button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar-fixed">
+    <h2>QuickClinic</h2>
+    <ul>
+      <li><a href="dashboard.html">🏠 Dashboard</a></li>
+      <li><a href="admin.html">📊 Admin Panel</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <div class="background-strip"></div>
+
+  <!-- Main -->
+  <main class="dashboard-content">
+    <button id="darkToggle" class="dark-mode-toggle">🌙</button>
+
+    <div class="floating-box">
+      <h2>🔐 Admin Dashboard</h2>
+
+      <div id="stats">
+        <p>Total Users: <strong id="totalUsers">0</strong></p>
+        <p>Doctors: <strong id="totalDoctors">0</strong></p>
+        <p>Patients: <strong id="totalPatients">0</strong></p>
+        <p>Bookings: <strong id="totalBookings">0</strong></p>
+        <p>Today's Bookings: <strong id="todaysBookings">0</strong></p>
+      </div>
+
+      <h3>All Users</h3>
+      <table border="1" id="userTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Promote</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="userBody">
+          <tr><td colspan="5">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ✅ JS Scripts -->
+  
+  <script src="assets/darkmode.js"></script>
+  <script src="assets/admin.js"></script>
+</body>
+</html>

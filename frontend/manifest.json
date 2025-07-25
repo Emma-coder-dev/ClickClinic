@@ -1,0 +1,20 @@
+{
+  "name": "QuickClinic",
+  "short_name": "QuickClinic",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0b7d77",
+  "theme_color": "#0b7d77",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctor Records | QuickClinic</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body class="dashboard-layout">
+  <button class="sidebar-toggle">☰</button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar-fixed">
+    <h2>QuickClinic</h2>
+    <ul>
+      <li><a href="doctor-dashboard.html">🏥 Dashboard</a></li>
+      <li><a href="chat-doctor.html">💬 Chat</a></li>
+      <li><a href="record-doctor.html">📁 Patient Records</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Background -->
+  <div class="background-strip"></div>
+
+  <!-- Main Content -->
+  <main class="dashboard-content">
+    <button id="darkToggle" class="dark-mode-toggle">🌙</button>
+
+    <div class="floating-box">
+      <h2>Patient Medical Records</h2>
+
+      <!-- Patient Selector -->
+      <label for="patientSelect">Choose a patient:</label>
+      <select id="patientSelect">
+        <option value="">-- Select Patient --</option>
+      </select>
+
+      <!-- Record List -->
+      <h3 style="margin-top: 20px;">🗂️ Records</h3>
+      <ul id="recordList">
+        <li>Select a patient to view their records</li>
+      </ul>
+    </div>
+  </main>
+
+  <script>
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!token || !user || user.role !== "doctor") {
+      alert("Only doctors can view this page.");
+      window.location.href = "login.html";
+    }
+
+    // Logout
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    // Load patient list
+    fetch("https://quickclinic-backend.onrender.com/api/users/patients", {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+    .then(res => res.json())
+    .then(patients => {
+      const select = document.getElementById("patientSelect");
+      patients.forEach(patient => {
+        const opt = document.createElement("option");
+        opt.value = patient._id;
+        opt.textContent = patient.name + " (" + patient.email + ")";
+        select.appendChild(opt);
+      });
+    })
+    .catch(err => {
+      console.error("Failed to load patients:", err);
+    });
+
+    // Load records when patient is selected
+    document.getElementById("patientSelect").addEventListener("change", () => {
+      const patientId = document.getElementById("patientSelect").value;
+      if (!patientId) return;
+
+      fetch(`https://quickclinic-backend.onrender.com/api/records/patient/${patientId}`, {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(res => res.json())
+      .then(records => {
+        const list = document.getElementById("recordList");
+        list.innerHTML = "";
+
+        if (records.length === 0) {
+          list.innerHTML = "<li>No records found for this patient.</li>";
+          return;
+        }
+
+        records.forEach((r) => {
+          const item = document.createElement("li");
+          item.innerHTML = `
+            📝 ${r.description || "No description"} - 
+            <a href="https://quickclinic-backend.onrender.com/${r.file}" target="_blank">View</a> 
+            <small>(${new Date(r.date).toLocaleString()})</small>
+          `;
+          list.appendChild(item);
+        });
+      })
+      .catch(err => {
+        console.error("Failed to load records:", err);
+        document.getElementById("recordList").innerHTML =
+          "<li>Failed to load records</li>";
+      });
+    });
+  </script>
+
+  <script src="assets/darkmode.js"></script>
+</body>
+</html>
