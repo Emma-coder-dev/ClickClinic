@@ -6,6 +6,9 @@
 }
 body, html {
   font-family: 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* ✅ GENERAL STYLING */
@@ -86,10 +89,15 @@ button.delete-btn:hover {
 /* ✅ HOME PAGE */
 .home-body {
   background: linear-gradient(to right, #e6f0f0, #cce5e5);
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 .home-container {
   background-color: white;
@@ -116,40 +124,8 @@ button.delete-btn:hover {
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
-}
-.sidebar-fixed {
-  width: 220px;
-  background-color: #0b7d77;
-  color: white;
-  padding: 30px 20px;
-  height: 100vh;
-}
-.sidebar-fixed h2 {
-  margin-bottom: 30px;
-}
-.sidebar-fixed ul {
-  list-style: none;
-}
-.sidebar-fixed ul li {
-  margin-bottom: 15px;
-}
-.sidebar-fixed ul li a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-.sidebar-fixed ul li a:hover {
-  text-decoration: underline;
-}
-.background-strip {
-  width: 80px;
-  background-color: #e1e8e8;
-}
-.dashboard-content {
-  flex: 1;
-  padding: 60px 30px;
-  background-color: #f8f8f8;
-  position: relative;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* ✅ FLOATING BOX */
@@ -160,6 +136,7 @@ button.delete-btn:hover {
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
   max-width: 800px;
   margin: 0 auto;
+  width: 100%;
 }
 
 /* ✅ INFO GRID */
@@ -320,10 +297,123 @@ table th, table td {
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* On desktop, return dark mode button to normal */
+.dark-mode-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ✅ SIDEBAR STYLES */
+.sidebar-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  max-width: 90vw;
+  height: 100vh;
+  background: #0b7d77;
+  color: white;
+  padding: 30px 20px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+  z-index: 100;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+}
+.sidebar-fixed.active {
+  transform: translateX(0);
+}
+.sidebar-fixed h2 {
+  margin-bottom: 30px;
+}
+.sidebar-fixed ul {
+  list-style: none;
+}
+.sidebar-fixed ul li {
+  margin-bottom: 15px;
+}
+.sidebar-fixed ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+.sidebar-fixed ul li a:hover {
+  text-decoration: underline;
+}
+
+/* ✅ SIDEBAR OVERLAY */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 99;
+  transition: opacity 0.3s;
+}
+.sidebar-overlay.active {
+  display: block;
+}
+
+/* ✅ SIDEBAR TOGGLE BUTTON */
+.sidebar-toggle {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 110;
+  background: #0b7d77;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+
+/* ✅ BACKGROUND STRIP */
+.background-strip {
+  width: 80px;
+  background-color: #e1e8e8;
+}
+
+/* ✅ DASHBOARD CONTENT */
+.dashboard-content {
+  flex: 1;
+  padding: 60px 30px;
+  background-color: #f8f8f8;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ✅ DESKTOP STYLES */
 @media (min-width: 769px) {
+  .sidebar-fixed {
+    position: static;
+    width: 220px;
+    max-width: none;
+    height: auto;
+    transform: none !important;
+    box-shadow: none;
+    background: #0b7d77;
+    color: white;
+  }
+  .sidebar-overlay {
+    display: none !important;
+  }
+  .sidebar-toggle {
+    position: static;
+    margin-bottom: 16px;
+    box-shadow: none;
+  }
   .dark-mode-toggle {
     position: absolute;
     top: 15px;
@@ -336,56 +426,41 @@ table th, table td {
     box-shadow: none;
     font-size: 22px;
   }
+}
 
-/* ✅ RESPONSIVENESS */
+/* ✅ MOBILE RESPONSIVENESS */
 @media screen and (max-width: 768px) {
   .dashboard-layout {
     flex-direction: column;
   }
-
-  .sidebar-fixed {
-    width: 100%;
-    height: auto;
-    text-align: center;
-  }
-
   .background-strip {
     display: none;
   }
-
   .dashboard-content {
     padding: 20px;
   }
-
   .floating-box {
     padding: 20px;
   }
-
   .info-grid {
     grid-template-columns: 1fr;
   }
-
   .chat-form {
     flex-direction: column;
   }
-
   .chat-form button {
     width: 100%;
   }
-
   table th, table td {
     font-size: 14px;
     padding: 8px;
   }
-
   .admin-stats {
     grid-template-columns: 1fr;
   }
 }
 
-
-
-/* === QuickClinic Landing Page Styles === */
+/* ✅ LANDING PAGE STYLES */
 body.home-body {
   background: #fff;
   color: #0b7d77;
@@ -393,6 +468,9 @@ body.home-body {
   margin: 0;
   min-height: 100vh;
   transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 .dark-mode {
@@ -408,13 +486,14 @@ body.home-body {
 
 .hero-section {
   max-width: 600px;
-  margin: 3em auto 2em auto;
+  margin: 2em auto 1em auto;
   text-align: center;
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(11,125,119,0.08);
-  padding: 2.5em 2em 2em 2em;
+  padding: 2em 1.5em 1.5em 1.5em;
   transition: background 0.3s, color 0.3s;
+  width: 90%;
 }
 
 .hero-section h1 {
@@ -434,39 +513,14 @@ body.home-body {
   margin-top: 1.5em;
 }
 
-.btn {
-  background: #0b7d77;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.7em 1.6em;
-  font-size: 1em;
-  font-weight: 600;
-  margin: 0 0.5em 0.5em 0;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  display: inline-block;
-}
-
-.btn-alt {
-  background: #fff;
-  color: #0b7d77;
-  border: 2px solid #0b7d77;
-}
-
-.btn:hover, .btn-alt:hover {
-  background: #05514e;
-  color: #fff;
-}
-
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5em;
   max-width: 900px;
-  margin: 2.5em auto 2em auto;
+  margin: 2em auto 1em auto;
   padding: 0 1em;
+  width: 100%;
 }
 
 .feature-box {
@@ -511,14 +565,76 @@ body.home-body {
   transform: translateY(0);
 }
 
-@media (max-width: 700px) {
+/* Desktop styles for landing page */
+@media (min-width: 1024px) {
   .hero-section {
-    padding: 1.5em 0.7em 1.2em 0.7em;
-    margin: 2em 0 1em 0;
+    max-width: 800px;
+    padding: 3em 2.5em 2.5em 2.5em;
+    margin: 3em auto 2em auto;
+  }
+  .hero-section h1 {
+    font-size: 3em;
+  }
+  .hero-desc {
+    font-size: 1.3em;
+    line-height: 1.6;
+  }
+  .features-grid {
+    max-width: 1200px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2em;
+    padding: 0 2em;
+  }
+  .feature-box {
+    padding: 2.5em 1.5em 2em 1.5em;
+    font-size: 1.2em;
+  }
+  .feature-box .feature-icon {
+    font-size: 2.8em;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-section {
+    max-width: 700px;
+    padding: 2.5em 2em 2em 2em;
+  }
+  .hero-section h1 {
+    font-size: 2.5em;
+  }
+  .hero-desc {
+    font-size: 1.2em;
+  }
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.8em;
+    padding: 0 1.5em;
+  }
+  .feature-box {
+    padding: 2em 1.3em 1.5em 1.3em;
+    font-size: 1.1em;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .hero-section {
+    padding: 1.5em 1em 1.2em 1em;
+    margin: 1em auto;
+    width: 95%;
+    max-width: 500px;
+  }
+  .hero-section h1 {
+    font-size: 2em;
+  }
+  .hero-desc {
+    font-size: 1em;
   }
   .features-grid {
     gap: 1em;
-    padding: 0 0.2em;
+    padding: 0 0.5em;
+    grid-template-columns: 1fr;
   }
   .feature-box {
     padding: 1.2em 0.5em 1em 0.5em;
@@ -528,7 +644,7 @@ body.home-body {
 
 /* Dark mode for feature boxes */
 .dark .feature-box {
-  background:black;
+  background: black;
   color: #fff;
   box-shadow: 0 4px 18px rgba(0,0,0,0.13);
 }
@@ -540,87 +656,11 @@ body.home-body {
 }
 
 .dark .btn {
-  background:#0b7d77;
-  color:white;
+  background: #0b7d77;
+  color: white;
   border: 2px solid rgb(155, 147, 147);
 }
 
 .dark .hero-section {
   background-color: black;
-}
-
-/* --- Sidebar Overlay for Mobile --- */
-.sidebar-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.4);
-  z-index: 99;
-  transition: opacity 0.3s;
-}
-.sidebar-overlay.active {
-  display: block;
-}
-
-/* --- Sidebar Styles --- */
-.sidebar-fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 260px;
-  height: 100vh;
-  background: #0b7d77;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-  z-index: 100;
-  transform: translateX(-100%);
-  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
-}
-.sidebar-fixed.active {
-  transform: translateX(0);
-}
-
-@media (min-width: 769px) {
-  .sidebar-fixed {
-    transform: none !important;
-    position: static;
-    width: 220px;
-    box-shadow: none;
-    height: auto;
-    background: #0b7d77;
-    color: white;
-  }
-  .sidebar-overlay {
-    display: none !important;
-  }
-}
-
-/* Sidebar toggle button always on top for mobile */
-.sidebar-toggle {
-  position: fixed;
-  top: 18px;
-  left: 18px;
-  z-index: 110;
-  background: #0b7d77;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  cursor: pointer;
-}
-@media (min-width: 769px) {
-  .sidebar-toggle {
-    position: static;
-    margin-bottom: 16px;
-    box-shadow: none;
-  }
-}
 }

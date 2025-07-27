@@ -25,7 +25,7 @@ if (user.role === "doctor") {
   let selectedDoctorId = null;
 
   // ✅ Fetch doctors
-  fetch("https://quickclinic-backend.onrender.com/api/users/doctors")
+  fetch("https://clinic-backend-5b4v.onrender.com//api/users/doctors")
     .then(res => res.json())
     .then(doctors => {
       doctors.forEach(doc => {
@@ -50,7 +50,7 @@ if (user.role === "doctor") {
 
   // 📨 Load chat history
   function loadMessages() {
-    fetch(`https://quickclinic-backend.onrender.com/api/chat/${selectedDoctorId}`, {
+    fetch(`https://clinic-backend-5b4v.onrender.com//api/chat/${selectedDoctorId}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -84,7 +84,7 @@ if (user.role === "doctor") {
     }
 
     try {
-      const res = await fetch("https://quickclinic-backend.onrender.com/api/chat", {
+      const res = await fetch("https://clinic-backend-5b4v.onrender.com//api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,20 +1,20 @@
 const CACHE_NAME = 'quickclinic-v1';
 const urlsToCache = [
-  '/frontend/',
-  '/frontend/index.html',
-  '/frontend/login.html',
-  '/frontend/register.html',
-  '/frontend/dashboard.html',
-  '/frontend/chat.html',
-  '/frontend/chat-doctor.html',
-  '/frontend/book.html',
-  '/frontend/record.html',
-  '/frontend/record-doctor.html',
-  '/frontend/assets/style.css',
-  '/frontend/assets/darkmode.js',
-  '/frontend/assets/icons/icon-192.png',
-  '/frontend/assets/icons/icon-512.png',
-  '/frontend/manifest.json',
+  '/',
+  'index',
+  '/login',
+  '/register',
+  '/dashboard',
+  '/chat',
+  'chat-doctor',
+  '/book',
+  '/record',
+  '/record-doctor',
+  '/assets/style.css',
+  '/assets/darkmode.js',
+  '/assets/icons/icon-192.png',
+  '/assets/icons/icon-512.png',
+  '/manifest.json',
 ];
 
 self.addEventListener('install', event => {
@@ -27,7 +27,16 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
-      .then(response => response || fetch(event.request))
+      .then(response => {
+        // Return cached version or fetch from network
+        return response || fetch(event.request);
+      })
+      .catch(() => {
+        // If both cache and network fail, return a fallback
+        if (event.request.destination === 'document') {
+          return caches.match('/index.html');
+        }
+      })
   );
 });
 
@@ -41,4 +50,3 @@ self.addEventListener('activate', event => {
     )
   );
 });
-

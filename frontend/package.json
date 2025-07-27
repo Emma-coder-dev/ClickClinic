@@ -1,0 +1,23 @@
+{
+  "name": "clickclinic-frontend",
+  "version": "1.0.0",
+  "description": "ClickClinic Frontend - Medical Clinic Management System",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "build": "echo 'Static site - no build required'",
+    "dev": "serve ."
+  },
+  "keywords": [
+    "medical",
+    "clinic",
+    "healthcare",
+    "appointment",
+    "booking"
+  ],
+  "author": "ClickClinic Team",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+} 

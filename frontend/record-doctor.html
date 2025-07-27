@@ -60,7 +60,7 @@
     }
 
     // Load patient list
-    fetch("https://quickclinic-backend.onrender.com/api/users/patients", {
+    fetch("https://clinic-backend-5b4v.onrender.com/api/users/patients", {
       headers: {
         Authorization: "Bearer " + token
       }
@@ -84,7 +84,7 @@
       const patientId = document.getElementById("patientSelect").value;
       if (!patientId) return;
 
-      fetch(`https://quickclinic-backend.onrender.com/api/records/patient/${patientId}`, {
+      fetch(`https://clinic-backend-5b4v.onrender.com/api/records/patient/${patientId}`, {
         headers: {
           Authorization: "Bearer " + token
         }
@@ -103,7 +103,7 @@
           const item = document.createElement("li");
           item.innerHTML = `
             📝 ${r.description || "No description"} - 
-            <a href="https://quickclinic-backend.onrender.com/${r.file}" target="_blank">View</a> 
+            <a href="https://clinic-backend-5b4v.onrender.com/${r.file}" target="_blank">View</a> 
             <small>(${new Date(r.date).toLocaleString()})</small>
           `;
           list.appendChild(item);

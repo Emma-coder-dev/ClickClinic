@@ -16,7 +16,7 @@ const doctorSelect = document.getElementById("doctorSelect");
 const bookingForm = document.getElementById("bookingForm");
 
 // ✅ Load doctors
-fetch("https://quickclinic-backend.onrender.com/api/users/doctors")
+fetch("https://clinic-backend-5b4v.onrender.com//api/users/doctors")
   .then(res => res.json())
   .then(doctors => {
     if (doctors.length === 0) {
@@ -47,7 +47,7 @@ bookingForm.addEventListener("submit", async (e) => {
   const reason = document.getElementById("reason").value;
 
   try {
-    const res = await fetch("https://quickclinic-backend.onrender.com/api/bookings", {
+    const res = await fetch("https://clinic-backend-5b4v.onrender.com//api/bookings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
