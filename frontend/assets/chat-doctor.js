@@ -21,7 +21,7 @@ const messageInput = document.getElementById("messageInput");
 let selectedPatientId = null;
 
 // 🔄 Fetch patients (needs /api/users/patients endpoint)
-fetch("https://clinic-backend-5b4v.onrender.com//api/users/patients", {
+fetch("https://clinic-backend-5b4v.onrender.com/api/users/patients", {
   headers: {
     Authorization: `Bearer ${token}`
   }
@@ -50,7 +50,7 @@ patientSelect.addEventListener("change", () => {
 
 // 📩 Load messages
 function loadMessages() {
-  fetch(`https://clinic-backend-5b4v.onrender.com//api/chat/${selectedPatientId}`, {
+  fetch(`https://clinic-backend-5b4v.onrender.com/api/chat/${selectedPatientId}`, {
     headers: { Authorization: `Bearer ${token}` }
   })
     .then(res => res.json())
@@ -84,7 +84,7 @@ chatForm.addEventListener("submit", async (e) => {
   }
 
   try {
-    const res = await fetch("https://clinic-backend-5b4v.onrender.com//api/chat", {
+    const res = await fetch("https://clinic-backend-5b4v.onrender.com/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

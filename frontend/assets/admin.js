@@ -11,7 +11,7 @@ if (!token || !user || user.role !== "admin") {
 }
 
 // 🔢 Load stats
-fetch("https://clinic-backend-5b4v.onrender.com//api/admin/stats", {
+fetch("https://clinic-backend-5b4v.onrender.com/api/admin/stats", {
   headers: { Authorization: `Bearer ${token}` }
 })
   .then(res => res.json())
@@ -25,7 +25,7 @@ fetch("https://clinic-backend-5b4v.onrender.com//api/admin/stats", {
   .catch(err => console.error("Stats error:", err));
 
 // 👥 Load users
-fetch("https://clinic-backend-5b4v.onrender.com//api/admin/users", {
+fetch("https://clinic-backend-5b4v.onrender.com/api/admin/users", {
   headers: { Authorization: `Bearer ${token}` }
 })
   .then(res => res.json())
@@ -65,7 +65,7 @@ fetch("https://clinic-backend-5b4v.onrender.com//api/admin/users", {
 function promoteUser(userId) {
   if (!confirm("Promote this user to admin?")) return;
 
-  fetch(`https://clinic-backend-5b4v.onrender.com//api/admin/user/${userId}/role`, {
+  fetch(`https://clinic-backend-5b4v.onrender.com/api/admin/user/${userId}/role`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -88,7 +88,7 @@ function promoteUser(userId) {
 function deleteUser(userId) {
   if (!confirm("Delete this user permanently?")) return;
 
-  fetch(`https://clinic-backend-5b4v.onrender.com//api/admin/user/${userId}`, {
+  fetch(`https://clinic-backend-5b4v.onrender.com/api/admin/user/${userId}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` }
   })

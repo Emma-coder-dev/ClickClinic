@@ -5,7 +5,7 @@ document.getElementById('otpForm').addEventListener('submit', async (e) => {
   const code = document.getElementById('code').value.trim();
 
   try {
-    const res = await fetch('https://clinic-backend-5b4v.onrender.com//api/auth/login-code', {
+    const res = await fetch('https://clinic-backend-5b4v.onrender.com/api/auth/login-code', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, code })

@@ -10,7 +10,7 @@ sendCodeForm.addEventListener("submit", async (e) => {
   const email = emailInput.value.trim();
 
   try {
-    const res = await fetch("https://clinic-backend-5b4v.onrender.com//api/users/send-code", {
+    const res = await fetch("https://clinic-backend-5b4v.onrender.com/api/users/send-code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
@@ -37,7 +37,7 @@ loginCodeForm.addEventListener("submit", async (e) => {
   const code = codeInput.value.trim();
 
   try {
-    const res = await fetch("https://clinic-backend-5b4v.onrender.com//api/users/login-code", {
+    const res = await fetch("https://clinic-backend-5b4v.onrender.com/api/users/login-code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, code })
