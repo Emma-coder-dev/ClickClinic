@@ -1,4 +1,4 @@
-# ClickClinic 🏥
+# QuickClinic 🏥
 
 A comprehensive medical clinic management system with real-time features, built with Node.js backend and modern HTML/CSS/JavaScript frontend.
 
