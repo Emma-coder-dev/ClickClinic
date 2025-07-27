@@ -49,7 +49,7 @@ cd frontend
 ## 🌐 Live Demo
 
 - **Backend API**: https://clinic-backend-5b4v.onrender.com/
-- **Frontend**: Deployed on Vercel (coming soon)
+- **Frontend**: Deployed on Vercel (https://click-clinic-topaz.vercel.app/)
 
 ## 🛠️ Technologies Used
 
